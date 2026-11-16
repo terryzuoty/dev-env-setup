@@ -1,0 +1,70 @@
+typeset -U path fpath
+
+# user@host folder (git branch) √, or ?<exit code> after a failed command
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git:*' formats ' (%b)'
+zstyle ':vcs_info:git:*' actionformats ' (%b|%a)'
+precmd_functions+=(vcs_info)
+setopt PROMPT_SUBST
+PS1='%B%F{131}%n@%m %F{220}%1~%F{75}${vcs_info_msg_0_} %(?.%F{green}√.%F{red}?%?)%f%b %# '
+
+export CLICOLOR=1
+export LSCOLORS=ExGxFxDxCxDxDxhbadExEx
+
+alias ll="ls -lah"
+alias llg="ls -lah | grep"
+
+alias ga="git commit --amend"
+alias gan="git commit --amend --no-edit"
+alias gadd="git add"
+alias gchb="git checkout -b"
+alias gbr="git branch"
+alias gbrv="git branch -vv"
+alias gc="git commit -m"
+alias gcl="git clone"
+alias gl="git log"
+alias gpull="git pull --rebase"
+alias gpush="git push"
+alias gfto="git fetch origin"
+alias gfro="git fetch origin && git rebase origin/master"
+alias gr="git reset"
+alias grs="git reset --soft"
+alias grh="git reset --hard"
+alias grb="git rebase"
+alias gs="git status"
+
+# Switch branch, or cd into the worktree that already has it checked out
+unalias gch 2>/dev/null
+gch() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: gch <branch>"
+    return 1
+  fi
+  local wt_path
+  wt_path=$(git worktree list --porcelain 2>/dev/null | awk -v b="refs/heads/$1" '
+    /^worktree /{p=$2}
+    /^branch /{if($2==b){print p; exit}}
+  ')
+  if [[ -n "$wt_path" ]]; then
+    cd "$wt_path"
+  else
+    git checkout "$1"
+  fi
+}
+_gch() {
+  local branches
+  branches=(${(f)"$(git branch --format='%(refname:short)' 2>/dev/null)"})
+  _describe 'branch' branches
+}
+
+alias claude='claude --permission-mode bypassPermissions --effort high'
+
+fpath=(/opt/homebrew/share/zsh-completions /opt/homebrew/share/zsh/site-functions $HOME/.docker/completions $fpath)
+autoload -Uz compinit && compinit
+compdef _gch gch
+
+# Components added with `gcloud components install`, e.g. gke-gcloud-auth-plugin
+[[ -d /opt/homebrew/share/google-cloud-sdk/bin ]] && path+=(/opt/homebrew/share/google-cloud-sdk/bin)
+
+[[ -f $HOME/.iterm2_shell_integration.zsh ]] && source $HOME/.iterm2_shell_integration.zsh
