@@ -81,6 +81,22 @@ iterm_default_fix() {
     "  cd \"$REPO\" && ./install.sh --install iterm2"
 }
 
+# iTerm2's theme (Settings → Appearance → General → Theme), stored as a number: TAB_STYLE_* in
+# iTerm2's sources/Settings/iTermPreferences.h. It's only checked; you set it once in Settings.
+iterm_theme_name() {
+  case $1 in
+    0) echo "Light" ;;
+    1) echo "Dark" ;;
+    2) echo "Light (High Contrast)" ;;
+    3) echo "Dark (High Contrast)" ;;
+    4) echo "Automatic, which follows macOS" ;;
+    5) echo "Minimal, which follows macOS" ;;
+    6) echo "Compact, which follows macOS" ;;
+    '') echo "not set" ;;
+    *) echo "unknown ($1)" ;;
+  esac
+}
+
 check_iterm2() {
   local guid current fix
   fix="cd \"$REPO\" && ./install.sh --install iterm2"
@@ -106,6 +122,14 @@ check_iterm2() {
   else
     add_item iterm2 iterm-default "iTerm2 default profile" todo "will set dev-env-setup" \
       "$(iterm_default_fix)" apply_iterm_default "$guid"
+  fi
+
+  current=$(defaults read com.googlecode.iterm2 TabStyleWithAutomaticOption 2>/dev/null)
+  if [[ $current == 1 || $current == 3 ]]; then
+    add_item iterm2 iterm-theme "iTerm2 theme" ok "$(iterm_theme_name "$current")"
+  else
+    add_item iterm2 iterm-theme "iTerm2 theme" manual "$(iterm_theme_name "$current"); set it to Dark" \
+      "In iTerm2 → Settings → Appearance → General: Theme → Dark"
   fi
 }
 
