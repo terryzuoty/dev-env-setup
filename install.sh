@@ -18,7 +18,7 @@ set -o pipefail
 
 REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 BREWFILE="$REPO/Brewfile"
-ALL_STEPS=(brew gcloud dotfiles terminal iterm2 manual)
+ALL_STEPS=(brew gcloud rust dotfiles terminal iterm2 manual)
 
 # shellcheck source=lib/common.sh
 source "$REPO/lib/common.sh"
@@ -26,6 +26,8 @@ source "$REPO/lib/common.sh"
 source "$REPO/lib/brew.sh"
 # shellcheck source=lib/gcloud.sh
 source "$REPO/lib/gcloud.sh"
+# shellcheck source=lib/rust.sh
+source "$REPO/lib/rust.sh"
 # shellcheck source=lib/dotfiles.sh
 source "$REPO/lib/dotfiles.sh"
 # shellcheck source=lib/apps.sh
@@ -52,7 +54,7 @@ for arg in "$@"; do
   case $arg in
     --install) MODE=install ;;
     -h | --help) usage; exit 0 ;;
-    brew | gcloud | dotfiles | terminal | iterm2 | manual) STEPS+=("$arg") ;;
+    brew | gcloud | rust | dotfiles | terminal | iterm2 | manual) STEPS+=("$arg") ;;
     *) printf 'Unknown argument: %s\n\n' "$arg" >&2; usage >&2; exit 2 ;;
   esac
 done
@@ -94,6 +96,7 @@ run_checks() {
   reset_items
   wants_step brew && check_brew
   wants_step gcloud && check_gcloud
+  wants_step rust && check_rust
   wants_step dotfiles && check_dotfiles
   wants_step terminal && check_terminal
   wants_step iterm2 && check_iterm2

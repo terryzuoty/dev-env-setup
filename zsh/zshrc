@@ -1,5 +1,12 @@
 typeset -U path fpath
 
+# History: keep 50,000 commands, shared between open windows, without duplicates.
+# A command that starts with a space isn't saved.
+HISTSIZE=50000
+SAVEHIST=50000
+setopt EXTENDED_HISTORY SHARE_HISTORY HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS
+setopt INTERACTIVE_COMMENTS
+
 # user@host folder (git branch) √, or ?<exit code> after a failed command
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git
@@ -63,6 +70,17 @@ alias claude='claude --permission-mode bypassPermissions --effort high'
 fpath=(/opt/homebrew/share/zsh-completions /opt/homebrew/share/zsh/site-functions $HOME/.docker/completions $fpath)
 autoload -Uz compinit && compinit
 compdef _gch gch
+
+# Commands Homebrew doesn't link into /opt/homebrew/bin, and commands that tools install for you
+path=(
+  $HOME/.local/bin                       # uv tool install
+  /opt/homebrew/opt/python/libexec/bin   # python and pip (Homebrew links only python3 and pip3)
+  /opt/homebrew/opt/rustup/bin           # rustup, cargo, rustc
+  $path
+  $HOME/go/bin                           # go install
+  $HOME/.cargo/bin                       # cargo install
+  "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"   # goland ., pycharm ., …
+)
 
 # Components added with `gcloud components install`, e.g. gke-gcloud-auth-plugin
 [[ -d /opt/homebrew/share/google-cloud-sdk/bin ]] && path+=(/opt/homebrew/share/google-cloud-sdk/bin)

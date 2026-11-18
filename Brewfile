@@ -13,6 +13,7 @@ brew "jq"
 brew "zsh-completions"
 brew "curl"
 brew "python"
+brew "rustup"
 brew "k9s"
 brew "kubernetes-cli"
 
