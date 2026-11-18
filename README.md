@@ -80,6 +80,15 @@ file is backed up next to it (`.zshrc.backup-<date>`) whenever the script change
 
 If you move the repo, run `./install.sh --install dotfiles` to point the blocks at the new folder.
 
+## Shell shortcuts
+
+- **Ctrl-R**: fuzzy-search your history (fzf). Type any part of a command, ↑/↓ to pick, Enter to use it.
+- **Ctrl-T**: pick a file or folder and paste its path into the command line (fzf).
+- **→** (or End): accept the grey suggestion from history as you type (zsh-autosuggestions).
+- A command shows green when it exists and red when it doesn't, before you press Enter
+  (zsh-syntax-highlighting).
+- `rg <text>` searches code and `fd <name>` finds files; both skip what `.gitignore` lists.
+
 ## Changing the setup
 
 - **Add an app or tool**: add a line to `Brewfile`, then `./install.sh --install brew`.
@@ -102,7 +111,7 @@ install.sh          entry point
 Brewfile            formulae and casks
 zsh/zprofile        Homebrew on PATH
 zsh/zshrc           prompt, history, PATH for python/go/rust/uv tools, fnm, JAVA_HOME, aliases,
-                    completions
+                    completions, fzf keys, autosuggestions, syntax highlighting
 git/gitconfig       name and email
 iterm2/profile.json iTerm2 profile
 lib/                the checks behind each step

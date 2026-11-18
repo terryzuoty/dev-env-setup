@@ -96,3 +96,15 @@ unset _jdk
 [[ -d /opt/homebrew/share/google-cloud-sdk/bin ]] && path+=(/opt/homebrew/share/google-cloud-sdk/bin)
 
 [[ -f $HOME/.iterm2_shell_integration.zsh ]] && source $HOME/.iterm2_shell_integration.zsh
+
+# fzf: Ctrl-R fuzzy-searches history, Ctrl-T picks files. (Its Option-C, cd into a folder, works only
+# when the terminal sends Option as Esc+.)
+[[ -x /opt/homebrew/bin/fzf ]] && source <(/opt/homebrew/bin/fzf --zsh)
+
+# Grey suggestion from history as you type; → accepts it
+[[ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] &&
+  source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Colours a command green or red as you type. Keep this last: it has to see every other key binding.
+[[ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
+  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
