@@ -64,11 +64,10 @@ reason, and listed at the end with the steps to do it yourself. The summary is a
   `zsh compinit: insecure directories`. Homebrew's installer leaves `/opt/homebrew/share` writable by
   the admin group, so a new Mac needs this once.
 - **Terminal**: default and new-window profile is Clear Dark, or Pro on a macOS without Clear Dark.
-- **iTerm2**: the [`iterm2/profile.json`](iterm2/profile.json) profile (SF Mono 14) is installed and
-  is the default, and iTerm2's theme is Dark, so it stays dark when macOS switches to light mode.
-  Setting the theme or default profile needs iTerm2 closed, so the script asks to quit it.
-- **Manual items**: three-finger drag, a GitHub SSH key, `gh` login, `gcloud` login. These drop off
-  the list once you've done them.
+- **iTerm2**: the [`iterm2/profile.json`](iterm2/profile.json) profile (SF Mono 14) is installed and is the default.
+- **Manual items**: three-finger drag, iTerm2's theme set to Dark (so it stays dark when macOS
+  switches to light mode), a GitHub SSH key, `gh` login, `gcloud` login. These drop off the list once
+  you've done them.
 
 ## Home config files
 
