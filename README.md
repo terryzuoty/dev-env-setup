@@ -1,7 +1,7 @@
 # dev-env-setup
 
 Checks an Apple silicon Mac against my dev setup and installs what's missing: Homebrew apps and
-tools, the Rust toolchain, zsh, git, Terminal and iTerm2. Safe to run any number of times.
+tools, Node and Rust, zsh, git, Terminal and iTerm2. Safe to run any number of times.
 
 ## New Mac
 
@@ -32,7 +32,7 @@ tools, the Rust toolchain, zsh, git, Terminal and iTerm2. Safe to run any number
 |---|---|
 | `./install.sh` | Checks and reports. Changes nothing. |
 | `./install.sh --install` | Checks, reports, asks y/n, applies what's missing, then checks again. |
-| `./install.sh [--install] <step>…` | Only the named steps: `brew`, `gcloud`, `rust`, `dotfiles`, `terminal`, `iterm2`, `manual`. |
+| `./install.sh [--install] <step>…` | Only the named steps: `brew`, `gcloud`, `rust`, `node`, `dotfiles`, `terminal`, `iterm2`, `manual`. |
 
 Exit code: `0` when everything is in place, `1` when something isn't, `2` when Apple's command line
 tools or Homebrew are missing (it stops right away and tells you how to install them).
@@ -51,6 +51,9 @@ reason, and listed at the end with the steps to do it yourself. The summary is a
 - **gcloud components**: `gke-gcloud-auth-plugin`.
 - **Rust**: rustup (from the Brewfile) has a default toolchain. If it has none, `stable` is installed
   and made the default.
+- **Node**: fnm (from the Brewfile) has a default Node version. If it has none, the latest LTS is
+  installed and becomes the default. If you installed Homebrew's own `node`, it's listed for you to
+  remove, so there's only one `node`.
 - **Shell and git**: `~/.zprofile`, `~/.zshrc` and `~/.gitconfig` load [`zsh/zprofile`](zsh/zprofile),
   [`zsh/zshrc`](zsh/zshrc) and [`git/gitconfig`](git/gitconfig) first. Only you can change the
   folders zsh loads completions from; otherwise every new shell stops with
@@ -81,6 +84,8 @@ If you move the repo, run `./install.sh --install dotfiles` to point the blocks 
 
 - **Add an app or tool**: add a line to `Brewfile`, then `./install.sh --install brew`.
 - **Shell**: edit `zsh/zshrc` and open a new terminal window.
+- **Node**: a project picks its version with `.nvmrc` or `.node-version`, and fnm switches to it when
+  you `cd` in. To move the default to a newer LTS: `fnm install --lts && fnm default lts-latest`.
 - **iTerm2 profile**: edit `iterm2/profile.json`, then `./install.sh --install iterm2`.
 
 ## Layout
@@ -89,7 +94,7 @@ If you move the repo, run `./install.sh --install dotfiles` to point the blocks 
 install.sh          entry point
 Brewfile            formulae and casks
 zsh/zprofile        Homebrew on PATH
-zsh/zshrc           prompt, history, PATH for python/go/rust/uv tools, aliases, completions
+zsh/zshrc           prompt, history, PATH for python/go/rust/uv tools, fnm, aliases, completions
 git/gitconfig       name and email
 iterm2/profile.json iTerm2 profile
 lib/                the checks behind each step

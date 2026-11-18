@@ -1,7 +1,7 @@
 brew "git"
 brew "gh"
 brew "glab"
-brew "node"
+brew "fnm"
 brew "go"
 brew "go-task"
 brew "tree"

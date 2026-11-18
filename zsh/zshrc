@@ -1,10 +1,11 @@
 typeset -U path fpath
 
-# History: keep 50,000 commands, shared between open windows, without duplicates.
-# A command that starts with a space isn't saved.
+# History: keep 50,000 commands without duplicates. Each command is saved when it finishes,
+# so a new window can find it; windows already open keep their own up-arrow list
+# (`fc -RI` pulls in the others). A command that starts with a space isn't saved.
 HISTSIZE=50000
 SAVEHIST=50000
-setopt EXTENDED_HISTORY SHARE_HISTORY HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS
+setopt EXTENDED_HISTORY INC_APPEND_HISTORY_TIME HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS
 setopt INTERACTIVE_COMMENTS
 
 # user@host folder (git branch) √, or ?<exit code> after a failed command
@@ -80,6 +81,11 @@ path=(
   $HOME/go/bin                           # go install
   $HOME/.cargo/bin                       # cargo install
 )
+
+# Node from fnm: the default version everywhere, or the one a project's .nvmrc or .node-version
+# asks for (in that folder or a parent) as soon as you cd into it
+[[ -x /opt/homebrew/bin/fnm ]] &&
+  eval "$(/opt/homebrew/bin/fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
 
 # Components added with `gcloud components install`, e.g. gke-gcloud-auth-plugin
 [[ -d /opt/homebrew/share/google-cloud-sdk/bin ]] && path+=(/opt/homebrew/share/google-cloud-sdk/bin)
