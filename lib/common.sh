@@ -43,6 +43,8 @@ step_title() {
     brew-formula) echo "Homebrew formulae" ;;
     brew-cask) echo "Homebrew casks" ;;
     gcloud) echo "gcloud components" ;;
+    rust) echo "Rust toolchain" ;;
+    node) echo "Node.js" ;;
     dotfiles) echo "Shell and git config" ;;
     terminal) echo "Terminal" ;;
     iterm2) echo "iTerm2" ;;

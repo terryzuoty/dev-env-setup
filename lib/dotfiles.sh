@@ -6,6 +6,9 @@
 BLOCK_BEGIN="# >>> dev-env-setup >>>"
 BLOCK_END="# <<< dev-env-setup <<<"
 
+# The folders zsh/zshrc adds to fpath. Keep this in step with the fpath line there.
+ZSH_COMPLETION_DIRS=(/opt/homebrew/share/zsh-completions /opt/homebrew/share/zsh/site-functions "$HOME/.docker/completions")
+
 dot_file() {
   case $1 in
     zprofile) echo "$HOME/.zprofile" ;;
@@ -53,7 +56,7 @@ strip_block() {
 }
 
 check_dotfiles() {
-  local kind state note email repo_email fix
+  local kind state note email repo_email fix insecure dirs dir chmod_cmd
   fix="cd \"$REPO\" && ./install.sh --install dotfiles"
   for kind in zprofile zshrc gitconfig; do
     state=$(dot_state "$kind")
@@ -84,6 +87,40 @@ check_dotfiles() {
         "zsh -n \"$REPO/zsh/$kind\"   (shows the error)"
     fi
   done
+
+  insecure=$(insecure_completion_paths)
+  if [[ -z $insecure ]]; then
+    add_item dotfiles completion "zsh completion folders" ok "only you can change them"
+  else
+    dirs='' chmod_cmd='chmod go-w'
+    while IFS= read -r dir; do
+      dirs="$dirs $dir" chmod_cmd="$chmod_cmd \"$dir\""
+    done <<<"$insecure"
+    add_item dotfiles completion "zsh completion folders" todo \
+      "other users can write to$dirs; will stop that so new shells don't warn" "$chmod_cmd" apply_completion_dirs
+  fi
+}
+
+# Folders (and their parents) that compinit refuses because other users can write to them.
+# Homebrew's installer leaves /opt/homebrew/share writable by the admin group, which makes every
+# new shell print "zsh compinit: insecure directories". One path per line, nothing when all is well.
+insecure_completion_paths() {
+  # shellcheck disable=SC2016
+  zsh -fc 'fpath=("$@" $fpath); autoload -Uz compaudit; compaudit 2>/dev/null' zsh "${ZSH_COMPLETION_DIRS[@]}" |
+    grep '^/'
+}
+
+apply_completion_dirs() {
+  local dir failed=''
+  while IFS= read -r dir; do
+    chmod go-w "$dir" || failed="$failed \"$dir\""
+  done < <(insecure_completion_paths)
+  if [[ -n $failed ]]; then
+    RESULT_REASON="couldn't change the permissions of$failed"
+    RESULT_FIX="sudo chmod go-w$failed"
+    return 1
+  fi
+  return 0
 }
 
 apply_dotfile() {
