@@ -25,7 +25,9 @@ dot_block() {
       printf '%s\n[[ -f "%s" ]] && source "%s"\n%s\n' "$BLOCK_BEGIN" "$src" "$src" "$BLOCK_END"
       ;;
     gitconfig)
-      printf '%s\n[include]\n\tpath = "%s"\n%s\n' "$BLOCK_BEGIN" "$REPO/git/gitconfig" "$BLOCK_END"
+      # excludesFile needs the full path: a relative one isn't read relative to git/gitconfig.
+      printf '%s\n[include]\n\tpath = "%s"\n[core]\n\texcludesFile = "%s"\n%s\n' \
+        "$BLOCK_BEGIN" "$REPO/git/gitconfig" "$REPO/git/ignore" "$BLOCK_END"
       ;;
   esac
 }
@@ -56,7 +58,7 @@ strip_block() {
 }
 
 check_dotfiles() {
-  local kind state note email repo_email fix insecure dirs dir chmod_cmd
+  local kind state note email repo_email excludes fix insecure dirs dir chmod_cmd
   fix="cd \"$REPO\" && ./install.sh --install dotfiles"
   for kind in zprofile zshrc gitconfig; do
     state=$(dot_state "$kind")
@@ -67,6 +69,9 @@ check_dotfiles() {
           email=$(git config --global --includes --get user.email 2>/dev/null)
           repo_email=$(git config --file "$REPO/git/gitconfig" --get user.email)
           [[ -n $email && $email != "$repo_email" ]] && note="$note; user.email is overridden below it ($email)"
+          excludes=$(git config --global --includes --get core.excludesFile 2>/dev/null)
+          [[ -n $excludes && $excludes != "$REPO/git/ignore" ]] &&
+            note="$note; core.excludesFile is overridden below it ($excludes)"
         fi
         add_item dotfiles "d:$kind" "~/.$kind" ok "$note"
         ;;

@@ -1,0 +1,18 @@
+# Files git ignores in every repo on this Mac (core.excludesFile, set by the ~/.gitconfig block).
+# It only stops new files from being added; files a repo already tracks aren't affected.
+# Changes take effect right away. Check why a file is ignored: git check-ignore -v <file>
+
+# macOS
+.DS_Store
+._*
+
+# JetBrains IDEs
+.idea/
+
+# Editor swap files
+*.swp
+
+# Local secrets. Commit a template as .env.example instead; it isn't ignored.
+.env
+.env.local
+.env.*.local
