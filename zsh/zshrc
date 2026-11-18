@@ -79,7 +79,6 @@ path=(
   $path
   $HOME/go/bin                           # go install
   $HOME/.cargo/bin                       # cargo install
-  "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"   # goland ., pycharm ., …
 )
 
 # Components added with `gcloud components install`, e.g. gke-gcloud-auth-plugin
