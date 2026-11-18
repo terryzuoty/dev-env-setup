@@ -87,6 +87,11 @@ path=(
 [[ -x /opt/homebrew/bin/fnm ]] &&
   eval "$(/opt/homebrew/bin/fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
 
+# JDK 25 (the temurin@25 cask) for Gradle, Maven and IDEs; left alone when it isn't installed.
+# Another installed JDK for one shell: export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+_jdk=$(/usr/libexec/java_home -v 25 2>/dev/null) && export JAVA_HOME=$_jdk
+unset _jdk
+
 # Components added with `gcloud components install`, e.g. gke-gcloud-auth-plugin
 [[ -d /opt/homebrew/share/google-cloud-sdk/bin ]] && path+=(/opt/homebrew/share/google-cloud-sdk/bin)
 

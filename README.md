@@ -83,9 +83,16 @@ If you move the repo, run `./install.sh --install dotfiles` to point the blocks 
 ## Changing the setup
 
 - **Add an app or tool**: add a line to `Brewfile`, then `./install.sh --install brew`.
+- **Remove an app or tool**: delete its line from `Brewfile`, then `brew uninstall <name>` (add
+  `--cask` for apps), and `brew cleanup --prune=all` to clear Homebrew's download cache.
+  `brew uninstall` also removes dependencies nothing else needs.
 - **Shell**: edit `zsh/zshrc` and open a new terminal window.
 - **Node**: a project picks its version with `.nvmrc` or `.node-version`, and fnm switches to it when
   you `cd` in. To move the default to a newer LTS: `fnm install --lts && fnm default lts-latest`.
+- **Java**: `JAVA_HOME` points at JDK 25 from the `temurin@25` cask. A project that needs another
+  version: add that cask (e.g. `temurin@21`), then `export JAVA_HOME=$(/usr/libexec/java_home -v 21)`
+  in that shell. For the next LTS, add its cask, change `-v 25` in `zsh/zshrc`, then uninstall the
+  old cask.
 - **iTerm2 profile**: edit `iterm2/profile.json`, then `./install.sh --install iterm2`.
 
 ## Layout
@@ -94,7 +101,8 @@ If you move the repo, run `./install.sh --install dotfiles` to point the blocks 
 install.sh          entry point
 Brewfile            formulae and casks
 zsh/zprofile        Homebrew on PATH
-zsh/zshrc           prompt, history, PATH for python/go/rust/uv tools, fnm, aliases, completions
+zsh/zshrc           prompt, history, PATH for python/go/rust/uv tools, fnm, JAVA_HOME, aliases,
+                    completions
 git/gitconfig       name and email
 iterm2/profile.json iTerm2 profile
 lib/                the checks behind each step
