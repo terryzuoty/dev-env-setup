@@ -62,7 +62,8 @@ reason, and listed at the end with the steps to do it yourself. The summary is a
   Rust, Python, Java, ESLint and Prettier, YAML, Docker) is installed, using VS Code's `code` command.
   Extensions you've added yourself are left alone.
 - **Shell and git**: `~/.zprofile`, `~/.zshrc` and `~/.gitconfig` load [`zsh/zprofile`](zsh/zprofile),
-  [`zsh/zshrc`](zsh/zshrc) and [`git/gitconfig`](git/gitconfig) first. Only you can change the
+  [`zsh/zshrc`](zsh/zshrc) and [`git/gitconfig`](git/gitconfig) first, and git ignores the files
+  in [`git/ignore`](git/ignore) in every repo (`.DS_Store`, `.idea/`, swap files, `.env`). Only you can change the
   folders zsh loads completions from; otherwise every new shell stops with
   `zsh compinit: insecure directories`. Homebrew's installer leaves `/opt/homebrew/share` writable by
   the admin group, so a new Mac needs this once.
@@ -107,6 +108,8 @@ If you move the repo, run `./install.sh --install dotfiles` to point the blocks 
   `--cask` for apps), and `brew cleanup --prune=all` to clear Homebrew's download cache.
   `brew uninstall` also removes dependencies nothing else needs.
 - **Shell**: edit `zsh/zshrc` and open a new terminal window.
+- **Ignore a file type in every repo**: add a line to `git/ignore`; it takes effect right away. To
+  see why a file is ignored: `git check-ignore -v <file>`.
 - **Node**: a project picks its version with `.nvmrc` or `.node-version`, and fnm switches to it when
   you `cd` in. To move the default to a newer LTS: `fnm install --lts && fnm default lts-latest`.
 - **Java**: `JAVA_HOME` points at JDK 25 from the `temurin@25` cask. A project that needs another
@@ -124,6 +127,7 @@ zsh/zprofile        Homebrew on PATH
 zsh/zshrc           prompt, history, PATH for python/go/rust/uv tools, fnm, JAVA_HOME, aliases,
                     completions, fzf keys, autosuggestions, syntax highlighting
 git/gitconfig       name and email
+git/ignore          files git ignores in every repo
 iterm2/profile.json iTerm2 profile
 vscode/extensions.txt VS Code extensions
 lib/                the checks behind each step
