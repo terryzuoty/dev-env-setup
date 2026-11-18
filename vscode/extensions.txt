@@ -1,0 +1,25 @@
+# VS Code extensions, one ID (publisher.name) per line. ./install.sh --install vscode installs
+# what's missing. Find an extension's ID on its Marketplace page or in VS Code's Extensions panel.
+
+# Go: offers to install gopls and the debugger with `go install`, into ~/go/bin
+golang.go
+
+# Rust
+rust-lang.rust-analyzer
+
+# Python: also brings Pylance and the debugger
+ms-python.python
+charliermarsh.ruff
+
+# Java: Red Hat's language support, debugger, tests, Maven and Gradle; uses JDK 25 from JAVA_HOME
+vscjava.vscode-java-pack
+
+# JavaScript and TypeScript: language support is built in; these lint and format
+dbaeumer.vscode-eslint
+esbenp.prettier-vscode
+
+# YAML: Kubernetes manifests and CI files
+redhat.vscode-yaml
+
+# Docker (Container Tools)
+ms-azuretools.vscode-containers

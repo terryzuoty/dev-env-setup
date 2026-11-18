@@ -46,6 +46,7 @@ step_title() {
     rust) echo "Rust toolchain" ;;
     node) echo "Node.js" ;;
     languages) echo "Languages: run a small program in each" ;;
+    vscode) echo "VS Code extensions" ;;
     dotfiles) echo "Shell and git config" ;;
     terminal) echo "Terminal" ;;
     iterm2) echo "iTerm2" ;;

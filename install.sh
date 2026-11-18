@@ -18,7 +18,7 @@ set -o pipefail
 
 REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 BREWFILE="$REPO/Brewfile"
-ALL_STEPS=(brew gcloud rust node languages dotfiles terminal iterm2 manual)
+ALL_STEPS=(brew gcloud rust node languages vscode dotfiles terminal iterm2 manual)
 
 # shellcheck source=lib/common.sh
 source "$REPO/lib/common.sh"
@@ -32,6 +32,8 @@ source "$REPO/lib/rust.sh"
 source "$REPO/lib/node.sh"
 # shellcheck source=lib/languages.sh
 source "$REPO/lib/languages.sh"
+# shellcheck source=lib/vscode.sh
+source "$REPO/lib/vscode.sh"
 # shellcheck source=lib/dotfiles.sh
 source "$REPO/lib/dotfiles.sh"
 # shellcheck source=lib/apps.sh
@@ -58,7 +60,7 @@ for arg in "$@"; do
   case $arg in
     --install) MODE=install ;;
     -h | --help) usage; exit 0 ;;
-    brew | gcloud | rust | node | languages | dotfiles | terminal | iterm2 | manual) STEPS+=("$arg") ;;
+    brew | gcloud | rust | node | languages | vscode | dotfiles | terminal | iterm2 | manual) STEPS+=("$arg") ;;
     *) printf 'Unknown argument: %s\n\n' "$arg" >&2; usage >&2; exit 2 ;;
   esac
 done
@@ -103,6 +105,7 @@ run_checks() {
   wants_step rust && check_rust
   wants_step node && check_node
   wants_step languages && check_languages
+  wants_step vscode && check_vscode
   wants_step dotfiles && check_dotfiles
   wants_step terminal && check_terminal
   wants_step iterm2 && check_iterm2
