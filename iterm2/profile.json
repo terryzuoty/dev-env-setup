@@ -343,11 +343,11 @@
       },
       "BM Growl": true,
       "Background Color": {
-        "Red Component": 0.98,
+        "Red Component": 0.0806884765625,
         "Color Space": "sRGB",
-        "Blue Component": 0.98,
+        "Blue Component": 0.12103271484375,
         "Alpha Component": 1.0,
-        "Green Component": 0.98
+        "Green Component": 0.09911105036735535
       },
       "Background Color (Dark)": {
         "Red Component": 0.0806884765625,
@@ -364,11 +364,11 @@
         "Green Component": 0.98
       },
       "Badge Color": {
-        "Red Component": 0.7461385726928711,
+        "Red Component": 0.9787440299987793,
         "Color Space": "sRGB",
-        "Blue Component": 0.11610633134841919,
+        "Blue Component": 0.6521859746214886,
         "Alpha Component": 0.5,
-        "Green Component": 0.11610633134841919
+        "Green Component": 0.6521859746214886
       },
       "Badge Color (Dark)": {
         "Red Component": 0.9787440299987793,
@@ -387,11 +387,11 @@
       "Blinking Cursor": false,
       "Blur": false,
       "Bold Color": {
-        "Red Component": 0.062745101749897,
+        "Red Component": 0.9999960064888,
         "Color Space": "sRGB",
-        "Blue Component": 0.062745101749897,
+        "Blue Component": 1.0,
         "Alpha Component": 1.0,
-        "Green Component": 0.062745101749897
+        "Green Component": 1.0
       },
       "Bold Color (Dark)": {
         "Red Component": 0.9999960064888,
@@ -412,11 +412,11 @@
       "Columns": 80,
       "Cursor Boost (Dark)": 0.0,
       "Cursor Color": {
-        "Red Component": 0.0,
+        "Red Component": 0.9999763369560242,
         "Color Space": "sRGB",
-        "Blue Component": 0.0,
+        "Blue Component": 0.9999872446060181,
         "Alpha Component": 1.0,
-        "Green Component": 0.0
+        "Green Component": 1.0
       },
       "Cursor Color (Dark)": {
         "Red Component": 0.9999763369560242,
@@ -433,11 +433,11 @@
         "Green Component": 0.0
       },
       "Cursor Guide Color": {
-        "Red Component": 0.5233826041221619,
+        "Red Component": 0.37649588016392954,
         "Color Space": "sRGB",
-        "Blue Component": 0.8531928062438965,
+        "Blue Component": 0.9409904479980469,
         "Alpha Component": 0.25,
-        "Green Component": 0.7721771597862244
+        "Green Component": 0.8023261774920553
       },
       "Cursor Guide Color (Dark)": {
         "Red Component": 0.37649588016392954,
@@ -454,11 +454,11 @@
         "Green Component": 0.7721771862908952
       },
       "Cursor Text Color": {
-        "Red Component": 1.0,
+        "Red Component": 0.0,
         "Color Space": "sRGB",
-        "Blue Component": 1.0,
+        "Blue Component": 0.0,
         "Alpha Component": 1.0,
-        "Green Component": 1.0
+        "Green Component": 0.0
       },
       "Cursor Text Color (Dark)": {
         "Red Component": 0.0,
@@ -479,11 +479,11 @@
       "Disable Window Resizing": true,
       "Flashing Bell": false,
       "Foreground Color": {
-        "Red Component": 0.062745101749897,
+        "Red Component": 0.8619791269302368,
         "Color Space": "sRGB",
-        "Blue Component": 0.062745101749897,
+        "Blue Component": 0.8619885444641113,
         "Alpha Component": 1.0,
-        "Green Component": 0.062745101749897
+        "Green Component": 0.86199951171875
       },
       "Foreground Color (Dark)": {
         "Red Component": 0.8619791269302368,
@@ -587,10 +587,11 @@
       "Use Bright Bold": true,
       "Use Italic Font": true,
       "Use Non-ASCII Font": false,
-      "Use Separate Colors for Light and Dark Mode": true,
+      "Use Separate Colors for Light and Dark Mode": false,
       "Vertical Spacing": 1.0,
       "Visual Bell": true,
-      "Window Type": 0
+      "Window Type": 0,
+      "Cursor Boost": 0.0
     }
   ]
 }

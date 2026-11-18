@@ -81,6 +81,18 @@ iterm_default_fix() {
     "  cd \"$REPO\" && ./install.sh --install iterm2"
 }
 
+# iTerm2's window theme (tabs, title bar). It's stored as a number; 1 is Dark, 4 follows macOS
+# (TAB_STYLE_* in iTerm2's sources/Settings/iTermPreferences.h).
+ITERM_THEME_KEY=TabStyleWithAutomaticOption
+ITERM_THEME_DARK=1
+
+iterm_theme_fix() {
+  printf '%s\n' \
+    "In iTerm2 → Settings → Appearance → General: Theme → Dark" \
+    "Or quit iTerm2 (⌘Q) and run from Terminal:" \
+    "  cd \"$REPO\" && ./install.sh --install iterm2"
+}
+
 check_iterm2() {
   local guid current fix
   fix="cd \"$REPO\" && ./install.sh --install iterm2"
@@ -107,6 +119,19 @@ check_iterm2() {
     add_item iterm2 iterm-default "iTerm2 default profile" todo "will set dev-env-setup" \
       "$(iterm_default_fix)" apply_iterm_default "$guid"
   fi
+
+  current=$(defaults read com.googlecode.iterm2 "$ITERM_THEME_KEY" 2>/dev/null)
+  if [[ $current == "$ITERM_THEME_DARK" ]]; then
+    add_item iterm2 iterm-theme "iTerm2 theme" ok "Dark, whatever macOS's appearance is"
+  elif [[ $(host_app) == iTerm2 ]]; then
+    add_item iterm2 iterm-theme "iTerm2 theme" manual \
+      "should be Dark; can't change it while this script runs in iTerm2" "$(iterm_theme_fix)"
+  elif app_running iTerm2; then
+    add_item iterm2 iterm-theme "iTerm2 theme" todo "will set Dark (asks you to quit iTerm2 first)" \
+      "$(iterm_theme_fix)" apply_iterm_theme
+  else
+    add_item iterm2 iterm-theme "iTerm2 theme" todo "will set Dark" "$(iterm_theme_fix)" apply_iterm_theme
+  fi
 }
 
 apply_iterm_profile() {
@@ -115,13 +140,15 @@ apply_iterm_profile() {
   return 1
 }
 
-apply_iterm_default() {
+# iTerm2 overwrites its settings when it quits, so it must be closed before they're changed.
+# Returns 0 once it's closed (asking to quit it if it's open), 2 with RESULT_REASON otherwise.
+iterm_closed() {
   if [[ $(host_app) == iTerm2 ]]; then
     RESULT_REASON="this script is running in iTerm2"
     return 2
   fi
   if app_running iTerm2; then
-    if ! confirm "iTerm2 is open. Quit it now so its default profile can be changed?"; then
+    if ! confirm "iTerm2 is open. Quit it now so its settings can be changed?"; then
       RESULT_REASON="you chose not to quit iTerm2"
       return 2
     fi
@@ -130,7 +157,19 @@ apply_iterm_default() {
       return 2
     fi
   fi
+  return 0
+}
+
+apply_iterm_default() {
+  iterm_closed || return $?
   defaults write com.googlecode.iterm2 "Default Bookmark Guid" -string "$1" && return 0
+  RESULT_REASON="defaults write failed"
+  return 1
+}
+
+apply_iterm_theme() {
+  iterm_closed || return $?
+  defaults write com.googlecode.iterm2 "$ITERM_THEME_KEY" -int "$ITERM_THEME_DARK" && return 0
   RESULT_REASON="defaults write failed"
   return 1
 }
