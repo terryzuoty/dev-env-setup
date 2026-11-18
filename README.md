@@ -32,7 +32,7 @@ tools, Node and Rust, zsh, git, Terminal and iTerm2. Safe to run any number of t
 |---|---|
 | `./install.sh` | Checks and reports. Changes nothing. |
 | `./install.sh --install` | Checks, reports, asks y/n, applies what's missing, then checks again. |
-| `./install.sh [--install] <step>…` | Only the named steps: `brew`, `gcloud`, `rust`, `node`, `languages`, `dotfiles`, `terminal`, `iterm2`, `manual`. |
+| `./install.sh [--install] <step>…` | Only the named steps: `brew`, `gcloud`, `rust`, `node`, `languages`, `vscode`, `dotfiles`, `terminal`, `iterm2`, `manual`. |
 
 Exit code: `0` when everything is in place, `1` when something isn't, `2` when Apple's command line
 tools or Homebrew are missing (it stops right away and tells you how to install them).
@@ -58,6 +58,9 @@ reason, and listed at the end with the steps to do it yourself. The summary is a
   each run a small program, using the same tools your shell does. It runs in a temporary folder
   that's deleted afterwards, with build caches kept in that folder and nothing downloaded, so
   checking leaves nothing behind. It takes a few seconds; run it alone with `./install.sh languages`.
+- **VS Code extensions**: every extension in [`vscode/extensions.txt`](vscode/extensions.txt) (Go,
+  Rust, Python, Java, ESLint and Prettier, YAML, Docker) is installed, using VS Code's `code` command.
+  Extensions you've added yourself are left alone.
 - **Shell and git**: `~/.zprofile`, `~/.zshrc` and `~/.gitconfig` load [`zsh/zprofile`](zsh/zprofile),
   [`zsh/zshrc`](zsh/zshrc) and [`git/gitconfig`](git/gitconfig) first. Only you can change the
   folders zsh loads completions from; otherwise every new shell stops with
@@ -97,6 +100,9 @@ If you move the repo, run `./install.sh --install dotfiles` to point the blocks 
 ## Changing the setup
 
 - **Add an app or tool**: add a line to `Brewfile`, then `./install.sh --install brew`.
+- **Add a VS Code extension**: add its ID (shown on its Marketplace page, e.g. `golang.go`) to
+  `vscode/extensions.txt`, then `./install.sh --install vscode`. To remove one, delete its line and
+  run `code --uninstall-extension <id>`.
 - **Remove an app or tool**: delete its line from `Brewfile`, then `brew uninstall <name>` (add
   `--cask` for apps), and `brew cleanup --prune=all` to clear Homebrew's download cache.
   `brew uninstall` also removes dependencies nothing else needs.
@@ -119,5 +125,6 @@ zsh/zshrc           prompt, history, PATH for python/go/rust/uv tools, fnm, JAVA
                     completions, fzf keys, autosuggestions, syntax highlighting
 git/gitconfig       name and email
 iterm2/profile.json iTerm2 profile
+vscode/extensions.txt VS Code extensions
 lib/                the checks behind each step
 ```
