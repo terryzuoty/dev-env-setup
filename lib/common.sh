@@ -45,6 +45,7 @@ step_title() {
     gcloud) echo "gcloud components" ;;
     rust) echo "Rust toolchain" ;;
     node) echo "Node.js" ;;
+    languages) echo "Languages: run a small program in each" ;;
     dotfiles) echo "Shell and git config" ;;
     terminal) echo "Terminal" ;;
     iterm2) echo "iTerm2" ;;
